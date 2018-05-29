@@ -1,0 +1,6 @@
+br\ufpr\tads\sistemacentral\Pokemon.class
+br\ufpr\tads\sistemacentral\ConnectionFactory.class
+br\ufpr\tads\sistemacentral\SistemaCentralDao.class
+br\ufpr\tads\sistemacentral\PokeAgendaResource.class
+br\ufpr\tads\sistemacentral\Treinador.class
+br\ufpr\tads\sistemacentral\ApplicationConfig.class

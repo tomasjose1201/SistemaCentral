@@ -5,6 +5,10 @@
  */
 package br.ufpr.tads.sistemacentral;
 
+import com.google.gson.Gson;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -13,6 +17,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -34,29 +39,51 @@ public class PokeAgendaResource {
     @POST
     @Path("/autenticar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response autenticarTreinador() {
-        return Response.status(Response.Status.OK).build();
+    public boolean autenticarTreinador(Message message) throws SQLException {
+        Map<String, String> parameters = message.getParameters();
+        SistemaCentralDao dao = new SistemaCentralDao();
+        Treinador treinador = new Treinador();
+        treinador.setLogin(parameters.get("login"));
+        treinador.setSenha(parameters.get("senha"));
+        boolean found = dao.findUser(treinador);
+        return found;
     }
-    
+
     //Serviço de cadastro de novo Pokemon;
     @POST
+    @Path("/novo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrarPokemon() {
+    public Response cadastrarPokemon(Message message) throws SQLException {
+        Map<String, String> parameters = message.getParameters();
+        SistemaCentralDao dao = new SistemaCentralDao();
+        Pokemon poke = new Pokemon();
+        poke.setNomePokemon(parameters.get("nomePokemon"));
+        poke.setEspecie(parameters.get("especie"));
+        poke.setPeso(Double.parseDouble(parameters.get("peso")));
+        poke.setAltura(Double.parseDouble(parameters.get("altura")));
+        poke.setIdTreinador(Integer.parseInt(parameters.get("idTreinador")));
+        dao.insert(poke);
         return Response.status(Response.Status.OK).build();
     }
-    
+
     //Serviço de consulta de todos os Pokemons;
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPokemons() {
-        throw new UnsupportedOperationException();
+    public String getPokemons() throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        ArrayList<Pokemon> pokemons = dao.selectAll();
+        String json = new Gson().toJson(pokemons);
+        return json;
     }
-    
+
     //Serviço de pesquisa de um determinado Pokemon
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPokemon() {
-        throw new UnsupportedOperationException();
+    public String getPokemon(@PathParam("id") int id) throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        Pokemon poke = dao.selectById(id);
+        String json = new Gson().toJson(poke);
+        return json;
     }
 }
