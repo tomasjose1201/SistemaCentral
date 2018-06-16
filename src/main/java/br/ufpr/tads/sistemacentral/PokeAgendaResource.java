@@ -36,20 +36,17 @@ public class PokeAgendaResource {
     }
 
     //Serviços de autenticação (login e senha);
-    @POST
+    @GET
     @Path("/autenticar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response autenticarTreinador(Map<String, String> parameters) throws SQLException {
+    public Response autenticarTreinador() throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Treinador treinador = new Treinador();
-        treinador.setLogin(parameters.get("login"));
-        treinador.setSenha(parameters.get("senha"));
-        boolean found = dao.findUser(treinador);
-        if (found) {
-            return Response.status(Response.Status.OK).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
+        treinador.setLogin("tomjose");
+        treinador.setSenha("tom");
+        Treinador result = dao.findUser(treinador);
+        String json = new Gson().toJson(result);
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
     }
 
     //Serviço de cadastro de novo Pokemon;

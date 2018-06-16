@@ -26,7 +26,7 @@ public class SistemaCentralDao {
     public SistemaCentralDao() {
     }
 
-    public boolean findUser(Treinador treinador) throws SQLException {
+    public Treinador findUser(Treinador treinador) throws SQLException {
         con = ConnectionFactory.getConnection();
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -43,10 +43,7 @@ public class SistemaCentralDao {
                 tr.setLogin(rs.getString("login"));
                 tr.setSenha(rs.getString("senha"));
             }
-            if (tr == null) {
-                return false;
-            }
-            return true;
+            return tr;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
