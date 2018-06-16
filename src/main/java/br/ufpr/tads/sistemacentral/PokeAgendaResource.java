@@ -40,8 +40,8 @@ public class PokeAgendaResource {
     @GET
     @Path("/autenticar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response autenticarTreinador(@QueryParam("login") String login, 
-            @QueryParam("senha") String senha) throws SQLException {
+    public Response autenticarTreinador(@PathParam("login") String login, 
+            @PathParam("senha") String senha) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Treinador treinador = new Treinador();
         treinador.setLogin(login);
