@@ -5,11 +5,13 @@
  */
 package br.ufpr.tads.sistemacentral;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Tom
  */
-public class Treinador {
+public class Treinador implements Serializable {
     private int idTreinador;
     private String nomeTreinador;
     private String login;

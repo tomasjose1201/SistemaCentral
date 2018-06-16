@@ -39,14 +39,17 @@ public class PokeAgendaResource {
     @POST
     @Path("/autenticar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean autenticarTreinador(Message message) throws SQLException {
-        Map<String, String> parameters = message.getParameters();
+    public Response autenticarTreinador(Map<String, String> parameters) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Treinador treinador = new Treinador();
         treinador.setLogin(parameters.get("login"));
         treinador.setSenha(parameters.get("senha"));
         boolean found = dao.findUser(treinador);
-        return found;
+        if (found) {
+            return Response.status(Response.Status.OK).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 
     //Serviço de cadastro de novo Pokemon;
