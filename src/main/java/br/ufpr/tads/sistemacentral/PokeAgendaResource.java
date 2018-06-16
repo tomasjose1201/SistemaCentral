@@ -38,7 +38,7 @@ public class PokeAgendaResource {
 
     //Serviços de autenticação (login e senha);
     @GET
-    @Path("/autenticar")
+    @Path("/autenticar/{login}/{senha}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response autenticarTreinador(@PathParam("login") String login, 
             @PathParam("senha") String senha) throws SQLException {
