@@ -18,6 +18,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -39,11 +40,12 @@ public class PokeAgendaResource {
     @GET
     @Path("/autenticar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response autenticarTreinador() throws SQLException {
+    public Response autenticarTreinador(@QueryParam("login") String login, 
+            @QueryParam("senha") String senha) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Treinador treinador = new Treinador();
-        treinador.setLogin("tomjose");
-        treinador.setSenha("tom");
+        treinador.setLogin(login);
+        treinador.setSenha(senha);
         Treinador result = dao.findUser(treinador);
         String json = new Gson().toJson(result);
         return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
