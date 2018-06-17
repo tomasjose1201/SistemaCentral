@@ -18,6 +18,7 @@ public class Pokemon implements Serializable {
     private double peso;
     private double altura;
     private int idTreinador;
+    private String nomeTreinador;
     private String foto;
 
     public Pokemon() {
@@ -69,6 +70,14 @@ public class Pokemon implements Serializable {
 
     public void setIdTreinador(int idTreinador) {
         this.idTreinador = idTreinador;
+    }
+
+    public String getNomeTreinador() {
+        return nomeTreinador;
+    }
+
+    public void setNomeTreinador(String nomeTreinador) {
+        this.nomeTreinador = nomeTreinador;
     }
 
     public String getFoto() {

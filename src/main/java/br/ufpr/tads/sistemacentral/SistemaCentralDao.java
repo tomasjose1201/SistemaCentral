@@ -20,7 +20,7 @@ public class SistemaCentralDao {
     private final String stmtFindUser = "select * from treinador where login = ? and senha = ?";
     private final String stmtInsert = "insert into pokemon values (null, ?, ?, ?, ?, ?, ?)";
     private final String stmtSelectAll = "select * from pokemon";
-    private final String stmtSelectById = "select * from pokemon where idPokemon = ?";
+    private final String stmtSelectById = "select * from pokemon a, treinador b where idPokemon = ? and a.idTreinador = b.idTreinador";
     private Connection con;
 
     public SistemaCentralDao() {
@@ -90,6 +90,7 @@ public class SistemaCentralDao {
                 poke.setPeso(rs.getDouble("peso"));
                 poke.setAltura(rs.getDouble("altura"));
                 poke.setIdTreinador(rs.getInt("idTreinador"));
+                poke.setNomeTreinador(rs.getString("nomeTreinador"));
                 poke.setFoto("foto"); // TODO
                 lista.add(poke);
             }
@@ -120,7 +121,7 @@ public class SistemaCentralDao {
                 poke.setPeso(rs.getDouble("peso"));
                 poke.setAltura(rs.getDouble("altura"));
                 poke.setIdTreinador(rs.getInt("idTreinador"));
-                poke.setFoto("foto"); // TODO
+                poke.setFoto(rs.getString("foto"));
             }
             return poke;
         } catch (SQLException e) {
