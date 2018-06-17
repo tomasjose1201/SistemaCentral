@@ -74,7 +74,8 @@ public class PokeAgendaResource {
     public Response getPokemons() throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         ArrayList<Pokemon> pokemons = dao.selectAll();
-        return Response.ok(pokemons).header("Access-Control-Allow-Origin", "*").build();
+        String json = new Gson().toJson(pokemons);
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
     }
 
     //Serviço de pesquisa de um determinado Pokemon
