@@ -97,4 +97,13 @@ public class PokeAgendaResource {
         String nome = dao.selectNomeTreinador(id);
         return nome;
     }
-}
+    
+    @GET
+    @Path("/pokemonfavorito/{id}")
+    public Response getPokemonFavorito(@PathParam("id") int id) throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        Pokemon favorito = dao.selectPokemonFavorito(id);
+        String json = new Gson().toJson(favorito);
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
+    }
+ }

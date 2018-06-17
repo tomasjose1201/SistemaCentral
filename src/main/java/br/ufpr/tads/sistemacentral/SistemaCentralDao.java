@@ -22,6 +22,7 @@ public class SistemaCentralDao {
     private final String stmtSelectAll = "select * from pokemon";
     private final String stmtSelectById = "select * from pokemon a where idPokemon = ?";
     private final String stmtSelectNomeTreinador = "select nomeTreinador from treinador where idTreinador = ?";
+    private final String stmtSelectPokemonFavorito = "select b.* from pokemon_favorito a, pokemon b where a.idTreinador = ? and a.idPokemon = b.idPokemon";
     private Connection con;
 
     public SistemaCentralDao() {
@@ -133,7 +134,7 @@ public class SistemaCentralDao {
         }
     }
 
-    String selectNomeTreinador(int id) throws SQLException {
+    public String selectNomeTreinador(int id) throws SQLException {
         con = ConnectionFactory.getConnection();
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -146,6 +147,35 @@ public class SistemaCentralDao {
                 nome = rs.getString("nomeTreinador");
             }
             return nome;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            stmt.close();
+            rs.close();
+            con.close();
+        }
+    }
+
+    public Pokemon selectPokemonFavorito(int id) throws SQLException {
+        con = ConnectionFactory.getConnection();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            Pokemon poke = null;
+            stmt = con.prepareStatement(stmtSelectPokemonFavorito);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                poke = new Pokemon();
+                poke.setIdPokemon(rs.getInt("idPokemon"));
+                poke.setNomePokemon(rs.getString("nomePokemon"));
+                poke.setEspecie(rs.getString("especie"));
+                poke.setPeso(rs.getDouble("peso"));
+                poke.setAltura(rs.getDouble("altura"));
+                poke.setIdTreinador(rs.getInt("idTreinador"));
+                poke.setFoto(rs.getString("foto"));
+            }
+            return poke;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
