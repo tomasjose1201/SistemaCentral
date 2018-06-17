@@ -70,10 +70,11 @@ public class PokeAgendaResource {
 
     //Serviço de consulta de todos os Pokemons;
     @GET
-    public Response getPokemons() throws SQLException {
+    public ArrayList<Pokemon> getPokemons() throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         ArrayList<Pokemon> pokemons = dao.selectAll();
-        return Response.ok(pokemons).header("Access-Control-Allow-Origin", "*").build();
+        //return Response.ok(pokemons).header("Access-Control-Allow-Origin", "*").build();
+        return pokemons;
     }
 
     //Serviço de pesquisa de um determinado Pokemon
