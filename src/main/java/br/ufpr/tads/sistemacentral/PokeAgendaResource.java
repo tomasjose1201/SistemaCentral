@@ -70,6 +70,7 @@ public class PokeAgendaResource {
 
     //Serviço de consulta de todos os Pokemons;
     @GET
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPokemons() throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
