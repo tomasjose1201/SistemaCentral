@@ -81,12 +81,12 @@ public class PokeAgendaResource {
 
     //Serviço de pesquisa de um determinado Pokemon
     @GET
-    @Path("/{id}")
+    @Path("/pokemon/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPokemon(@PathParam("id") int id) throws SQLException {
+    public Response getPokemon(@PathParam("id") int id) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Pokemon poke = dao.selectById(id);
         String json = new Gson().toJson(poke);
-        return json;
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
     }
 }
