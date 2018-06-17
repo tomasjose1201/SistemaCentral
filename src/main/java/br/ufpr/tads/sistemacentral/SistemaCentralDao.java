@@ -21,6 +21,7 @@ public class SistemaCentralDao {
     private final String stmtInsert = "insert into pokemon values (null, ?, ?, ?, ?, ?, ?)";
     private final String stmtSelectAll = "select * from pokemon";
     private final String stmtSelectById = "select * from pokemon a where idPokemon = ?";
+    private final String stmtSelectNomeTreinador = "select nomeTreinador from treinador where idTreinador = ?";
     private Connection con;
 
     public SistemaCentralDao() {
@@ -123,6 +124,28 @@ public class SistemaCentralDao {
                 poke.setFoto(rs.getString("foto"));
             }
             return poke;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            stmt.close();
+            rs.close();
+            con.close();
+        }
+    }
+
+    String selectNomeTreinador(int id) throws SQLException {
+        con = ConnectionFactory.getConnection();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            String nome = "";
+            stmt = con.prepareStatement(stmtSelectNomeTreinador);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                nome = rs.getString("nomeTreinador");
+            }
+            return nome;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

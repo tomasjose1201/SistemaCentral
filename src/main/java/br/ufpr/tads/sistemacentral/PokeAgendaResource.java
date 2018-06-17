@@ -89,4 +89,12 @@ public class PokeAgendaResource {
         String json = new Gson().toJson(poke);
         return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
     }
+    
+    @GET
+    @Path("/nometreinador/{id}")
+    public String getNomeTreinador (@PathParam("id") int id) throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        String nome = dao.selectNomeTreinador(id);
+        return nome;
+    }
 }
