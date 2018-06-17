@@ -23,6 +23,7 @@ public class SistemaCentralDao {
     private final String stmtSelectById = "select * from pokemon a where idPokemon = ?";
     private final String stmtSelectNomeTreinador = "select nomeTreinador from treinador where idTreinador = ?";
     private final String stmtSelectPokemonFavorito = "select b.* from pokemon_favorito a, pokemon b where a.idTreinador = ? and a.idPokemon = b.idPokemon";
+    private final String stmtSelectPokemonByNome = "select * from pokemon where nomePokemon like ? limit 1";
     private Connection con;
 
     public SistemaCentralDao() {
@@ -164,6 +165,35 @@ public class SistemaCentralDao {
             Pokemon poke = null;
             stmt = con.prepareStatement(stmtSelectPokemonFavorito);
             stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                poke = new Pokemon();
+                poke.setIdPokemon(rs.getInt("idPokemon"));
+                poke.setNomePokemon(rs.getString("nomePokemon"));
+                poke.setEspecie(rs.getString("especie"));
+                poke.setPeso(rs.getDouble("peso"));
+                poke.setAltura(rs.getDouble("altura"));
+                poke.setIdTreinador(rs.getInt("idTreinador"));
+                poke.setFoto(rs.getString("foto"));
+            }
+            return poke;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            stmt.close();
+            rs.close();
+            con.close();
+        }
+    }
+
+    public Pokemon selectPokemonByNome(String nomePokemon) throws SQLException {
+        con = ConnectionFactory.getConnection();
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            Pokemon poke = null;
+            stmt = con.prepareStatement(stmtSelectPokemonByNome);
+            stmt.setString(1, '%' + nomePokemon + '%');
             rs = stmt.executeQuery();
             while (rs.next()) {
                 poke = new Pokemon();

@@ -40,6 +40,7 @@ public class PokeAgendaResource {
     @GET
     @Path("/autenticar/{login}/{senha}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response autenticarTreinador(@PathParam("login") String login, 
             @PathParam("senha") String senha) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
@@ -100,10 +101,20 @@ public class PokeAgendaResource {
     
     @GET
     @Path("/pokemonfavorito/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getPokemonFavorito(@PathParam("id") int id) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Pokemon favorito = dao.selectPokemonFavorito(id);
         String json = new Gson().toJson(favorito);
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
+    }
+    
+    @GET
+    @Path("/search/{pokemon}")
+    public Response searchPokemon(@PathParam("pokemon") String nomePokemon) throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        Pokemon result = dao.selectPokemonByNome(nomePokemon);
+        String json = new Gson().toJson(result);
         return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
     }
  }
