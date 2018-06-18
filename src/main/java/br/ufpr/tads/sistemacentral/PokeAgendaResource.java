@@ -56,7 +56,7 @@ public class PokeAgendaResource {
     @POST
     @Path("/novo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrarPokemon(Message message) throws SQLException {
+    public void cadastrarPokemon(Message message) throws SQLException {
         Map<String, String> parameters = message.getParameters();
         SistemaCentralDao dao = new SistemaCentralDao();
         Pokemon poke = new Pokemon();
@@ -66,7 +66,6 @@ public class PokeAgendaResource {
         poke.setAltura(Double.parseDouble(parameters.get("altura")));
         poke.setIdTreinador(Integer.parseInt(parameters.get("idTreinador")));
         dao.insert(poke);
-        return Response.status(Response.Status.OK).build();
     }
 
     //Serviço de consulta de todos os Pokemons;
