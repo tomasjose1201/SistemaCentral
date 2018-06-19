@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -55,17 +56,18 @@ public class PokeAgendaResource {
     //Serviço de cadastro de novo Pokemon;
     @POST
     @Path("/novo")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void cadastrarPokemon(Message message) throws SQLException {
-        Map<String, String> parameters = message.getParameters();
+    public Integer cadastrarPokemon(@FormParam("nome") String nome, @FormParam("especie") String especie,
+            @FormParam("peso") double peso, @FormParam("altura") double altura,
+            @FormParam("idTreinador") int idTreinador, @FormParam("foto") String foto) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Pokemon poke = new Pokemon();
-        poke.setNomePokemon(parameters.get("nomePokemon"));
-        poke.setEspecie(parameters.get("especie"));
-        poke.setPeso(Double.parseDouble(parameters.get("peso")));
-        poke.setAltura(Double.parseDouble(parameters.get("altura")));
-        poke.setIdTreinador(Integer.parseInt(parameters.get("idTreinador")));
-        dao.insert(poke);
+        poke.setNomePokemon(nome);
+        poke.setEspecie(especie);
+        poke.setPeso(peso);
+        poke.setAltura(altura);
+        poke.setIdTreinador(idTreinador);
+        poke.setFoto(foto); 
+        return dao.insert(poke);
     }
 
     //Serviço de consulta de todos os Pokemons;

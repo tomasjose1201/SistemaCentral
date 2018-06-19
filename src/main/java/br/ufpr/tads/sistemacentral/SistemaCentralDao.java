@@ -56,9 +56,10 @@ public class SistemaCentralDao {
         }
     }
 
-    public void insert(Pokemon pokemon) throws SQLException {
+    public Integer insert(Pokemon pokemon) throws SQLException {
         con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
             stmt = con.prepareStatement(stmtInsert);
             stmt.setString(1, pokemon.getNomePokemon());
@@ -68,6 +69,13 @@ public class SistemaCentralDao {
             stmt.setInt(5, pokemon.getIdTreinador());
             stmt.setString(6, pokemon.getFoto());
             stmt.execute();
+            stmt = con.prepareStatement("select last_insert_id()");
+            rs = stmt.executeQuery();
+            int id = 0;
+            while (rs.next()) {
+                id = rs.getInt(1);
+            }
+            return id;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -93,7 +101,7 @@ public class SistemaCentralDao {
                 poke.setPeso(rs.getDouble("peso"));
                 poke.setAltura(rs.getDouble("altura"));
                 poke.setIdTreinador(rs.getInt("idTreinador"));
-                poke.setFoto("foto");
+                poke.setFoto(rs.getString("foto"));
                 lista.add(poke);
             }
             return lista;
