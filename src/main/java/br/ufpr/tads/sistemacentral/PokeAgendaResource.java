@@ -58,7 +58,7 @@ public class PokeAgendaResource {
     @Path("/novo")
     public Integer cadastrarPokemon(@FormParam("nome") String nome, @FormParam("especie") String especie,
             @FormParam("peso") double peso, @FormParam("altura") double altura,
-            @FormParam("idTreinador") int idTreinador, @FormParam("foto") String foto) throws SQLException {
+            @FormParam("idTreinador") int idTreinador) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         Pokemon poke = new Pokemon();
         poke.setNomePokemon(nome);
@@ -66,7 +66,6 @@ public class PokeAgendaResource {
         poke.setPeso(peso);
         poke.setAltura(altura);
         poke.setIdTreinador(idTreinador);
-        poke.setFoto(foto); 
         return dao.insert(poke);
     }
 
@@ -117,5 +116,14 @@ public class PokeAgendaResource {
         Pokemon result = dao.selectPokemonByNome(nomePokemon);
         String json = new Gson().toJson(result);
         return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
+    }
+    
+    @PUT
+    @Path("/updatefav/{idTreinador}/{idPokemon}")
+    public Response updateFavorito (@PathParam("idTreinador") int idTreinador, 
+            @PathParam("idPokemon") int idPokemon) throws SQLException {
+        SistemaCentralDao dao = new SistemaCentralDao();
+        dao.updateFav(idTreinador, idPokemon);
+        return Response.ok().build();
     }
  }
