@@ -120,10 +120,9 @@ public class PokeAgendaResource {
     
     @PUT
     @Path("/updatefav/{idTreinador}/{idPokemon}")
-    public Response updateFavorito (@PathParam("idTreinador") int idTreinador, 
+    public void updateFavorito (@PathParam("idTreinador") int idTreinador, 
             @PathParam("idPokemon") int idPokemon) throws SQLException {
         SistemaCentralDao dao = new SistemaCentralDao();
         dao.updateFav(idTreinador, idPokemon);
-        return Response.ok().build();
     }
  }
